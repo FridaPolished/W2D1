@@ -1,25 +1,27 @@
 
 require_relative "piece.rb"
+require_relative "rook.rb"
+
 
 class Board
 
-  attr_reader :grid
+  attr_reader :rows
   def initialize
-    null_pos = NullPiece.new
-    @grid = Array.new(8) { Array.new(8, null_pos) }
-    self[[0,0]] = Piece.new
-    self[[1,0]] = Piece.new
-    self[[3,0]] = Piece.new
-    self[[6,0]] = Piece.new
-    self[[7,0]] = Piece.new
+    @sentinel = NullPiece.new(self)
+    @rows = Array.new(8) { Array.new(8, @sentinel) }
+    self[[0,0]] = Rook.new(:white, self, [0,0])
+    self[[1,0]] = Rook.new(:white, self, [1,0])
+    self[[3,0]] = Rook.new(:white, self, [3,0])
+    self[[6,0]] = Rook.new(:white, self, [6,0])
+    self[[7,0]] = Rook.new(:white, self, [7,0])
   end
 
   def [](pos)
-    @grid[pos[0]][pos[1]]
+    @rows[pos[0]][pos[1]]
   end
 
   def []=(pos, value)
-    @grid[pos[0]][pos[1]] = value
+    @rows[pos[0]][pos[1]] = value
   end
   
 

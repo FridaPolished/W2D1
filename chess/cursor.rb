@@ -23,13 +23,19 @@ KEYMAP = {
   "\u0003" => :ctrl_c,
 }
 
-MOVES = {
-  left: [0, -1],
-  right: [0, 1],
-  up: [-1, 0],
-  down: [1, 0]
-}
+# MOVES = {
+#   left: [0, -1],
+#   right: [0, 1],
+#   up: [-1, 0],
+#   down: [1, 0]
+# }
 
+MOVES = {
+  left: [-1, 0],
+  right: [1, 0],
+  up: [0, -1],
+  down: [0, 1]
+}
 class Cursor
 
   attr_reader :cursor_pos, :board
@@ -71,31 +77,37 @@ class Cursor
 
     STDIN.echo = true # the console prints return values again
     STDIN.cooked! # the opposite of raw mode :)
-
     return input
   end
 
   def handle_key(key)
     case key
     when :up
-      @cursor_pos
-    
-    when :left
-    
-    when :right
-    
+      update_pos(MOVES[key]) 
+      return nil
     when :down
-
+      update_pos(MOVES[key]) 
+      return nil
+    when :left
+      update_pos(MOVES[key]) 
+      return nil
+    when :right
+      update_pos(MOVES[key]) 
+      return nil
     when :return, :space
-
+      return cursor_pos
     when :ctrl_c
+      Process.exit(0)
       raise "Interrupt"
-    else
-
     end
-
   end
 
   def update_pos(diff)
+    @cursor_pos[0] += diff[0]
+    @cursor_pos[1] += diff[1]
+    @cursor_pos[0] = 0 if cursor_pos[0] < 0
+    @cursor_pos[0] = 7 if cursor_pos[0] > 7
+    @cursor_pos[1] = 0 if cursor_pos[1] < 0
+    @cursor_pos[1] = 7 if cursor_pos[1] > 7  
   end
 end
